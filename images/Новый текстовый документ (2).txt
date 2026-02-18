@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Система комментирования на JS + Typescript</title>
+</head>
+<body>
+    <header class="header"></header>
+    <div class="content-wrapper">
+        <nav class="nav"></nav>
+        <main class="main">
+            <div class="content">
+                <div class="section-line one">
+                    <section class="section-small"></section>
+                    <section class="section-small"></section>
+                </div>
+                <div class="section-line two">
+                    <section class="section-small"></section>
+                    <section class="section-small"></section>
+                </div>
+                <div class="section-line three">
+                    <section class="section-small"></section>
+                    <section class="section-small"></section>
+                </div>
+                <div class="section-line four">
+                    <section class="section-small"></section>
+                    <section class="section-small"></section>
+                </div>
+                <div class="section-line five">
+                    <section class="section-big"></section>
+                </div>
+            </div>
+            <hr class="line">
+            <div class="comment-container">
+                <div class="settings-buttons">
+                    <div class="button-comment-container">
+                        <div class="button-comment__string">
+                            <a class="link-comment button-comment" href="#">Комментарии</a>
+                            <p class="link-comment" id="count-comments">(0)</p>
+                        </div>
+                        <hr class="line-comments">
+                    </div>
+                    <form class="sort-button-container">
+                        <select class="link-filter sort-button" id="sort-menu" name="sort">
+                            <option value="by-date">По дате</option>
+                            <option value="by-count-rating">По количеству оценок</option>
+                            <option value="by-relevance">По актуальности</option>
+                            <option value="by-number-responses">По количеству ответов</option>
+                        </select>
+                    </form>
+                    <!--<div class="sort-button-container">
+                         <a class="link-filter sort-button" href="#">По количеству оценок</a> 
+                        <div class="arrow"></div>
+                    </div>-->
+                    <div class="favorites-button-container">
+                        <a class="link-filter favorites-button" href="#">Избранное</a>
+                        <div class="favorites-icon">
+                            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g opacity="0.4">
+                                <mask id="mask0_12_552" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="17" height="17">
+                                <rect x="2.625" y="2.625" width="15.75" height="15.75" fill="url(#pattern0_12_552)"/>
+                                </mask>
+                                <g mask="url(#mask0_12_552)">
+                                <rect x="1.80469" y="2.625" width="19.3594" height="18.0469" fill="black"/>
+                                </g>
+                                </g>
+                                <circle opacity="0.4" cx="10.5" cy="10.5" r="9.5" stroke="black" stroke-width="2"/>
+                                <defs>
+                                <pattern id="pattern0_12_552" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlink:href="#image0_12_552" transform="scale(0.0104167)"/>
+                                </pattern>
+                                <image id="image0_12_552" width="96" height="96" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-comments-container" id="more-320px">
+                    <div class="img-name">
+                        <img class="avatar" id="my-avatar" src="../images/KorbenDetka.png" width="61" height="61">
+                        <h3 id = "my-name" class="name-commentator">Илья Васильевич</h3>
+                    </div>
+                    <h5 class="restrictions">Макс. 1000 символов</h5>
+                    <div class="textarea-wrapper">
+                        <textarea id="input-comments" rows="1" placeholder="Введите текст сообщения..."></textarea>
+                    </div>
+                    <div class="button-container">
+                        <h5 class="limit-count">Слишком длинное сообщение</h5>
+                        <button class="send-comments" disabled>Отправить</button>
+                    </div>
+                </div>
+                <div class="input-comments-container" id="more-1300px">
+                    <img class="avatar" id="my-avatar" src="../images/KorbenDetka.png" width="61" height="61">
+                    <div class="input-container">
+                        <div class="input-information-container">
+                            <h3 id = "my-name" class="name-commentator">Илья Васильевич</h3>
+                            <h5 class="restrictions">Макс. 1000 символов</h5>
+                        </div>
+                        <div class="textarea-wrapper">
+                            <textarea id="input-comments" rows="1" placeholder="Введите текст сообщения..."></textarea>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <h5 class="limit-count">Слишком длинное сообщение</h5>
+                        <button class="send-comments" disabled>Отправить</button>
+                    </div>
+                </div>
+                <div id="comments">
+                    <div class="comment-block" data-comment-id="001">
+                        <img class="avatar" src="../images/Karapiteck.png" width="61" height="61">
+                        <div class="input-container">
+                            <div class="comment-information-container">
+                                <h3 class="name-commentator">Сергей Карапитек</h3>
+                                <h5 class="comment-date-time">30.01.2022 17:16</h5>
+                            </div>
+                            <p class="comment-text">Всем доброго времени суток! Не знаю как остальные, а я выскажу своё субъективное мнение по поводу артеллерии. Сразу скажу, я считаю, что её нужно апать. Вот вы сами подумайте, нормальный ТТ-10 наносит за 10 секунд 500 урона, а арта за 20 секунд только даст такой урон. Видите, урона меньше, значит, нужно подгонять её под урон ТТ-9 хотя бы. Тогда будет честно, это говорю вам я - Жак Вспышко!</p>
+                            <div class="buttons-comment-block">
+                                <div class="answer-container">
+                                    <button class="buttons-comment add-answer">
+                                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g opacity="0.4">
+                                            <mask id="mask0_3_259" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="22" height="22">
+                                            <rect width="22" height="22" fill="url(#pattern0_3_259)"/>
+                                            </mask>
+                                            <g mask="url(#mask0_3_259)">
+                                            <rect x="-2" y="-1" width="26" height="25" fill="black"/>
+                                            </g>
+                                            </g>
+                                            <defs>
+                                            <pattern id="pattern0_3_259" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                            <use xlink:href="#image0_3_259" transform="scale(0.01)"/>
+                                            </pattern>
+                                            <image id="image0_3_259" width="100" height="100" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAEvElEQVR4nO2cW4hVVRiAvzONFOOMRWMD6aA1E4OJBVEveQHD7KGHSKiHoKIQAiPQCOshovAlXyL0pZdQH9QuFEQWEdHV7lEYJVFmiZYYRNNNytIzPfxn8njmXNZeZ+3173X2/8HPzJlhzvnX/82+rfXvDYZhGIZhGIZhFIz12gkYwhDwNDClnYgBVwAHEBkmRJnbgeOclmFClBgEdnGmCBOixCLgC5rLMCGRuQ34k9YyTEgkzgG20F6ECYnEBLAPNxkmJGfWAJO4yzAhOXE27rsoE5IzC4AP8JNhQgJzA/AL/jJMSCD6gc1Ale5kmJAAjALv0r0IExKAVcAxwskwIZ6cBTwCnCKsDBPiwQjwGuFFmBAPVgJHyU+GCXGkAjwAnCRfGSbEgbnAK+QvohRCKl3+/QrgKWB+gFxc+R34rRa/1n1/DPi2Lg4jJxWloALcD/xLvC0ja5wAvgJ2AncDlwF9eRRDm/OBPegX3CcmgZeBjcDFoQujwZXAQfQLGyr2I9dLl4QsUizWI7sB7SLmEVVgL3ATclFbaOqb1MoQ3yH/fLNDFC80jU1qZYqfgQeR9f5C0KxJrYxxpFYLNdo1qZU5XgeWdFFXL5Yg5+7agy9qnADupfsLaidcmtQsJF4Ehv3K3JksTWoWp+MIsNyj3m3pQza/wdBvXAJGgTfJ8YBvuyy/qAL3edTbiU6d5xatY7NHvZ2w017/2OJRb2fswtAvHvIptitlnjrxjSpwh0+xXRkCninAQFOKf4DrfIqdhbvo3en3PGKSCItgVyHT09qDTSU+AmZ5VToD5wLPKQ80pXjUr8zZmO7DKnKTQ1HiFNLjHIUVwA85D6gX4gCOC10hppFHkFab1QHey4UBZHBzkP3zeUiz3gW1uBBYCIwB47XfF4FNwMOxPqyv9mFFbCUdBq5B1jF2AF8S5sahrPE3csdxVFYBP3WZeGghzRhGbq97DGkFiiXlpUD5Z2Ie8LZHsjGFNDKOdJq8R/5bz9KcxtCWfuR0L4/B5c04svs9nEPuU8AbEcbQkuuRdpqUhEzTjzTO7Q2c/xQRT4ObMYrsClITUs8ywvYzvxo3/ZnMAh4n/duiryXMAl4VWBw596asQe7pSFUIyK7sHuQ+lW7G8UTsxFsxDnxKukKmWYjsenzHcRyZFywEvfLwmQrd3RWwNn7K7bkF+IN0hUxzNX4PSHhLI9lOTACfk7YQkMWor8l+cC/knVwDwHbSFgIy0foJ2aRsVMnUkTvp3OlSdAaRTnlXIe/opOnOpciMbKpCQBpDPsNNyElk+aDQDAG7SVcIyLrMIdyk3KqUY2bWIesIKQoB2dpdnqC3TStBH1J/GP+NdBZyUC07T+YAz5KmEIAn6SxlgVp2nlSADdpJeDJI55bcm9WyKykraS9kk15q5eV5Wgt5QTGv0jLGzLPGZA/svcJWWs9rDSnmVVouonUL7tKefKBXwTmEHEuaMWFCdNja4ufzTYgO7wPfNPn5vMI/rKuHmYtcm9RzVCMRQ7icmQf1j1UzKjkV4EfOFPK9HUP0mEJWFuuZbUJ0+bDh9YAJ0WVfw+sBlSyM/xmh4cAe5VF1RlvGal//QiYeDcMwDMMwDMMwDMMwjOb8B7T5oNqqo7gkAAAAAElFTkSuQmCC"/>
+                                            </defs>
+                                        </svg>
+                                        Ответить
+                                    </button>
+                                </div>
+                                <div class="favorites-container">
+                                    <button class="buttons-comment add-favorites">
+                                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <mask id="mask0_3_291" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                            <rect width="24" height="24" fill="url(#pattern0_3_291)"/>
+                                            </mask>
+                                            <g mask="url(#mask0_3_291)">
+                                            <rect opacity="0.4" x="2" y="4" width="21" height="19" fill="black"/>
+                                            <path d="M3.5 9.00004C2.5 12.9999 8.83333 17.3333 12 20C20 14.4 21.1667 10.5001 20.5 9.00004C18.5 4.20004 13.8333 6.16667 12 8.00001C7 3.5 4.5 6.50002 3.5 9.00004Z" fill="white"/>
+                                            </g>
+                                            <defs>
+                                            <pattern id="pattern0_3_291" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                            <use xlink:href="#image0_3_291" transform="scale(0.0104167)"/>
+                                            </pattern>
+                                            <image id="image0_3_291" width="96" height="96" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+                                            </defs>
+                                        </svg>
+                                        В избранное
+                                    </button>
+                                </div>
+                                <div class="rating-comment-container">
+                                    <button class="buttons-comment rating-button demotion" data-action="down">
+                                        <svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle opacity="0.1" cx="10" cy="13" r="10" fill="black"/>
+                                            <path d="M13.0696 11.6399V13.2955H7.26562V11.6399H13.0696Z" fill="#FF0000"/>
+                                        </svg>
+                                    </button>
+                                    <p class="rating-count">0</p>
+                                    <button class="buttons-comment rating-button increase" data-action="up">
+                                        <svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle opacity="0.1" cx="10" cy="13" r="10" fill="black"/>
+                                            <path d="M9.13281 17.169V8.52699H10.8523V17.169H9.13281ZM5.67472 13.7045V11.9851H14.3168V13.7045H5.67472Z" fill="#8AC540"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-block lvl-2-nesting" data-comment-id="002">
+                        <img class="avatar" src="../images/Near_You.png" width="61" height="61">
+                        <div class="input-container">
+                            <div class="comment-information-container">
+                                <h3 class="name-commentator">Алексей Кучкин</h3>
+                                <div class="name-answer">
+                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g opacity="0.4">
+                                        <mask id="mask0_3_259" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="22" height="22">
+                                        <rect width="22" height="22" fill="url(#pattern0_3_259)"/>
+                                        </mask>
+                                        <g mask="url(#mask0_3_259)">
+                                        <rect x="-2" y="-1" width="26" height="25" fill="black"/>
+                                        </g>
+                                        </g>
+                                        <defs>
+                                        <pattern id="pattern0_3_259" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                        <use xlink:href="#image0_3_259" transform="scale(0.01)"/>
+                                        </pattern>
+                                        <image id="image0_3_259" width="100" height="100" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAEvElEQVR4nO2cW4hVVRiAvzONFOOMRWMD6aA1E4OJBVEveQHD7KGHSKiHoKIQAiPQCOshovAlXyL0pZdQH9QuFEQWEdHV7lEYJVFmiZYYRNNNytIzPfxn8njmXNZeZ+3173X2/8HPzJlhzvnX/82+rfXvDYZhGIZhGIZhFIz12gkYwhDwNDClnYgBVwAHEBkmRJnbgeOclmFClBgEdnGmCBOixCLgC5rLMCGRuQ34k9YyTEgkzgG20F6ECYnEBLAPNxkmJGfWAJO4yzAhOXE27rsoE5IzC4AP8JNhQgJzA/AL/jJMSCD6gc1Ale5kmJAAjALv0r0IExKAVcAxwskwIZ6cBTwCnCKsDBPiwQjwGuFFmBAPVgJHyU+GCXGkAjwAnCRfGSbEgbnAK+QvohRCKl3+/QrgKWB+gFxc+R34rRa/1n1/DPi2Lg4jJxWloALcD/xLvC0ja5wAvgJ2AncDlwF9eRRDm/OBPegX3CcmgZeBjcDFoQujwZXAQfQLGyr2I9dLl4QsUizWI7sB7SLmEVVgL3ATclFbaOqb1MoQ3yH/fLNDFC80jU1qZYqfgQeR9f5C0KxJrYxxpFYLNdo1qZU5XgeWdFFXL5Yg5+7agy9qnADupfsLaidcmtQsJF4Ehv3K3JksTWoWp+MIsNyj3m3pQza/wdBvXAJGgTfJ8YBvuyy/qAL3edTbiU6d5xatY7NHvZ2w017/2OJRb2fswtAvHvIptitlnjrxjSpwh0+xXRkCninAQFOKf4DrfIqdhbvo3en3PGKSCItgVyHT09qDTSU+AmZ5VToD5wLPKQ80pXjUr8zZmO7DKnKTQ1HiFNLjHIUVwA85D6gX4gCOC10hppFHkFab1QHey4UBZHBzkP3zeUiz3gW1uBBYCIwB47XfF4FNwMOxPqyv9mFFbCUdBq5B1jF2AF8S5sahrPE3csdxVFYBP3WZeGghzRhGbq97DGkFiiXlpUD5Z2Ie8LZHsjGFNDKOdJq8R/5bz9KcxtCWfuR0L4/B5c04svs9nEPuU8AbEcbQkuuRdpqUhEzTjzTO7Q2c/xQRT4ObMYrsClITUs8ywvYzvxo3/ZnMAh4n/duiryXMAl4VWBw596asQe7pSFUIyK7sHuQ+lW7G8UTsxFsxDnxKukKmWYjsenzHcRyZFywEvfLwmQrd3RWwNn7K7bkF+IN0hUxzNX4PSHhLI9lOTACfk7YQkMWor8l+cC/knVwDwHbSFgIy0foJ2aRsVMnUkTvp3OlSdAaRTnlXIe/opOnOpciMbKpCQBpDPsNNyElk+aDQDAG7SVcIyLrMIdyk3KqUY2bWIesIKQoB2dpdnqC3TStBH1J/GP+NdBZyUC07T+YAz5KmEIAn6SxlgVp2nlSADdpJeDJI55bcm9WyKykraS9kk15q5eV5Wgt5QTGv0jLGzLPGZA/svcJWWs9rDSnmVVouonUL7tKefKBXwTmEHEuaMWFCdNja4ufzTYgO7wPfNPn5vMI/rKuHmYtcm9RzVCMRQ7icmQf1j1UzKjkV4EfOFPK9HUP0mEJWFuuZbUJ0+bDh9YAJ0WVfw+sBlSyM/xmh4cAe5VF1RlvGal//QiYeDcMwDMMwDMMwDMMwjOb8B7T5oNqqo7gkAAAAAElFTkSuQmCC"/>
+                                        </defs>
+                                    </svg>
+                                    <h3 class="buttons-comment answer">Сергей Карапитек</h3>
+                                </div>
+                                <h5 class="comment-date-time">30.01.2022 17:54</h5>
+                            </div>
+                            <p class="comment-text">Дядь Серёж, ты бы таблеточки от шизофрении выпил что ли... Может ещё стан вернуть и крит внутренним модулям повысить? Тогда и Петрович не нужен будет с Instress</p>
+                            <div class="buttons-comment-block">
+                                <div class="favorites-container">
+                                    <button class="buttons-comment add-favorites">
+                                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <mask id="mask0_3_291" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                            <rect width="24" height="24" fill="url(#pattern0_3_291)"/>
+                                            </mask>
+                                            <g mask="url(#mask0_3_291)">
+                                            <rect opacity="0.4" x="2" y="4" width="21" height="19" fill="black"/>
+                                            <path d="M3.5 9.00004C2.5 12.9999 8.83333 17.3333 12 20C20 14.4 21.1667 10.5001 20.5 9.00004C18.5 4.20004 13.8333 6.16667 12 8.00001C7 3.5 4.5 6.50002 3.5 9.00004Z" fill="white"/>
+                                            </g>
+                                            <defs>
+                                            <pattern id="pattern0_3_291" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                            <use xlink:href="#image0_3_291" transform="scale(0.0104167)"/>
+                                            </pattern>
+                                            <image id="image0_3_291" width="96" height="96" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+                                            </defs>
+                                        </svg>
+                                        В избранное
+                                    </button>
+                                </div>
+                                <div class="rating-comment-container">
+                                    <button class="buttons-comment rating-button demotion" data-action="down">
+                                        <svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle opacity="0.1" cx="10" cy="13" r="10" fill="black"/>
+                                            <path d="M13.0696 11.6399V13.2955H7.26562V11.6399H13.0696Z" fill="#FF0000"/>
+                                        </svg>
+                                    </button>
+                                    <p class="rating-count">0</p>
+                                    <button class="buttons-comment rating-button increase" data-action="up">
+                                        <svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle opacity="0.1" cx="10" cy="13" r="10" fill="black"/>
+                                            <path d="M9.13281 17.169V8.52699H10.8523V17.169H9.13281ZM5.67472 13.7045V11.9851H14.3168V13.7045H5.67472Z" fill="#8AC540"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+    </div>
+    
+    <footer class="footer">
+
+    </footer>
+</body>
+</html>
+<script src="../ts/script.js"></script>
